@@ -29,15 +29,37 @@ code {
 .button {
   background-color: #31986a;
   color: white;
-  border-radius: 50px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
   border: none;
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   outline: none;
 }
 
 .button:hover {
   background-color: #1d6142;
   cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.button-cancel {
+  background-color: #f44336;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  outline: none;
+}
+
+.button-cancel:hover {
+  background-color: #c7372c;
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .formContainer {
@@ -64,4 +86,57 @@ code {
 
 .maxHeight {
   height: 100%;
+}
+
+/*---Scroll bar---*/
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  /* box-shadow: inset 0 0 5px grey; */
+}
+
+::-webkit-scrollbar-thumb {
+  /* background: #31986a; */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1d6142;
+}
+
+/*---------Row Styling---------*/
+.row {
+  display: flex;
+}
+
+.column1 {
+  flex: 80%;
+  /* padding: 10px; */
+  margin: 0 3rem 0 3rem;
+}
+
+.column2 {
+  flex: 20%;
+  margin-top: 5rem;
+}
+
+.welcome h3 {
+  color: #31986a;
+}
+
+.welcome h4 {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.columnTwo {
+  margin-top: 5rem;
+}
+
+.base {
+  background-color: white;
+  border-radius: 5px;
+  padding: 1rem;
+  border: 0.5px solid rgba(0, 0, 0, 0.5);
 }
