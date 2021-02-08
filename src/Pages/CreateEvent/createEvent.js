@@ -107,7 +107,7 @@ function CreateEvent({
       body: JSON.stringify({
         to: ["za.qa@outlook.com", "qarout.zaid@gmail.com"],
         subject: `SoC: ${msg.eventName}`,
-        text: `${user.username} has created a new School of Code event. ${msg.description} You can view more details here: https://societly.netlify.app/event/${data.eventid}`,
+        text: `Dear fellow bootcamper, <br/> ${user.username} has created a new School of Code event. ${msg.description} You can view more details <a href="https://societly.netlify.app/event/${data.eventid}">here</a>`,
       }),
       headers: { "Content-Type": "application/json" },
     })
