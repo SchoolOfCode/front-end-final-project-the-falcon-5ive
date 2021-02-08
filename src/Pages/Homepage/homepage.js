@@ -12,6 +12,7 @@ import undrawComm from "../../Images/undraw_community_8nwl.svg";
 import JobUpdates from "../../Components/jobUpdates/jobUpdates";
 import Card from "../../MaterialUi/Card/card.js";
 import UserLeftSide from "../../Components/userLeftSide/userLeftSide.js";
+import SkeleImage from "../../Components/skeleImage/skeleImage";
 
 //Context
 import { useUserContext } from "../../Context/userContext";
@@ -118,10 +119,10 @@ export default function Homepage() {
                   <div className={style.eventSec}>
                     <div className={style.eventSecSpan}>
                       <Link to="/events/education">
-                        <img
+                        <SkeleImage
                           className={style.eventImage}
                           src={undrawEdu}
-                          alt="education"
+                          alt={"education"}
                         />
                         <h4>Education</h4>
                       </Link>
@@ -131,10 +132,10 @@ export default function Homepage() {
                       <Link to="/events/community">
                         <h4>Community</h4>
                         <div className={style.img}>
-                          <img
+                          <SkeleImage
                             className={style.eventImage}
                             src={undrawComm}
-                            alt="community"
+                            alt={"community"}
                           />
                         </div>
                       </Link>
@@ -144,10 +145,10 @@ export default function Homepage() {
                       <Link to="/events/social">
                         <h4>Social</h4>
                         <div className={style.img}>
-                          <img
+                          <SkeleImage
                             className={style.eventImage}
                             src={undrawSocial}
-                            alt="social"
+                            alt={"social"}
                           />
                         </div>
                       </Link>

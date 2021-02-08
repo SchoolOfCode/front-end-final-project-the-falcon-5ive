@@ -113,7 +113,6 @@ export default function EventCard({
 
   /*--------Loading State--------*/
   const [loading, setLoading] = useState(true);
-  console.log({ loading });
 
   /*--------Maps marker state--------*/
   const [marker, setMarker] = useState(JSON.parse(location));
