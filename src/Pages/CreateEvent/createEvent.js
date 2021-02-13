@@ -81,13 +81,20 @@ function CreateEvent({
   // All user emails
   const [userEmails, setUserEmail] = useState("");
 
+  console.log("these are user emails", userEmails);
+
   // Get user emails
   let getAllUserEmails = async () => {
     let res = await fetch(`${url}/users`);
     let data = await res.json();
 
+    console.log("this is data useremails", data);
+
     return data.payload.map((user) => {
-      setUserEmail(user.email);
+      if (user.sub) {
+        console.log("user sub emails: ", user.email);
+        setUserEmail(user.email);
+      }
     });
   };
 
