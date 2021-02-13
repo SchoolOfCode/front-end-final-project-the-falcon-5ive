@@ -175,7 +175,7 @@ export default function EventCard({
       body: JSON.stringify({
         to: ["za.qa@outlook.com", "qarout.zaid@gmail.com"],
         subject: `SoC: Event canceled, ${eventname}`,
-        text: `The event created by ${user.username} has been deleted. Apologies of any inconvinienced this may have caused. You can view visit SoCietly here: https://societly.netlify.app`,
+        text: `The event created by ${user.username} has been deleted. Apologies for any inconveniences this may have caused. You can visit SoCietly here: https://societly.netlify.app`,
       }),
       headers: { "Content-Type": "application/json" },
     })
