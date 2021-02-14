@@ -82,7 +82,7 @@ function CreateEvent({
   const [marker, setMarker] = useState(null);
   const [eventLinkForm, setEventLinkForm] = useState("");
 
-  // All user emails
+  // All subbed user emails
   const [userEmails, setUserEmails] = useState("");
 
   // Get user emails
@@ -90,11 +90,8 @@ function CreateEvent({
     let res = await fetch(`${url}/users`);
     let data = await res.json();
 
-    console.log("this is data useremails", data);
-
     return data.payload.map((user) => {
       if (user.sub) {
-        console.log("user sub emails: ", user.email);
         setUserEmails(user.email);
       }
     });
@@ -117,7 +114,7 @@ function CreateEvent({
     await fetch(`${url}/mail`, {
       method: "POST",
       body: JSON.stringify({
-        to: ["za.qa@outlook.com", "qarout.zaid@gmail.com"], //userEmails
+        to: userEmails,
         subject: `SoC: ${msg.eventName}`,
         text: `Dear fellow bootcamper, <br/> ${user.username} has created a new School of Code event. ${msg.description} You can view more details <a href="https://societly.netlify.app/event/${data.eventid}">here</a>`,
       }),
@@ -179,6 +176,10 @@ function CreateEvent({
         <div className="signupTitle">
           <div className="signupTitleAligner">
             <h3>Create Event</h3>
+            <h3>
+              Please note that users will recieve an email regarding any created
+              or deleted event
+            </h3>
           </div>
         </div>
         <div className="formContent">

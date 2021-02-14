@@ -132,6 +132,9 @@ export default function EventCard({
   const [likeGet, setLikeGet] = useState([]);
   const [propLike, setPropLike] = useState([]);
 
+  // All subbed user emails
+  const [userEmails, setUserEmails] = useState("");
+
   function getAttenting() {
     setAttedingGet(attendinglist);
     setPropLike(likes);
@@ -171,12 +174,28 @@ export default function EventCard({
     setExpanded(!expanded);
   };
 
+  // Get user emails
+  let getAllUserEmails = async () => {
+    let res = await fetch(`${url}/users`);
+    let data = await res.json();
+
+    return data.payload.map((user) => {
+      if (user.sub) {
+        setUserEmails(user.email);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getAllUserEmails();
+  }, []);
+
   // Send email function
   async function deleteEmail() {
     await fetch(`${url}/mail`, {
       method: "POST",
       body: JSON.stringify({
-        to: ["za.qa@outlook.com", "qarout.zaid@gmail.com"], //userEmails
+        to: userEmails,
         subject: `SoC: Event canceled, ${eventname}`,
         text: `The event created by ${user.username} has been deleted. Apologies for any inconveniences this may have caused. You can visit SoCietly here: <a>https://societly.netlify.app</a>`,
       }),

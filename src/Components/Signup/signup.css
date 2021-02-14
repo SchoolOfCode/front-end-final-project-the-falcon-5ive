@@ -34,7 +34,8 @@
   transform: translateY(-50%);
 }
 
-.signupTitle h3 {
+.signupTitle h3,
+h4 {
   color: white;
 }
 
