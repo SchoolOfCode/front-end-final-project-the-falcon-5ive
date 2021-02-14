@@ -30,6 +30,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import Switch from "@material-ui/core/Switch";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function CreateEvent({
   eventsEdit,
@@ -71,6 +72,8 @@ function CreateEvent({
 
   const [hideMap, setHideMap] = useState("");
   const [hideLink, setHideLink] = useState("hide");
+  const [hideSubmit, setHideSubmit] = useState("");
+  const [hideProcess, setHideProcess] = useState("hide");
 
   const [error, setError] = useState(false);
 
@@ -79,9 +82,7 @@ function CreateEvent({
   const [eventLinkForm, setEventLinkForm] = useState("");
 
   // All user emails
-  const [userEmails, setUserEmail] = useState("");
-
-  console.log("these are user emails", userEmails);
+  const [userEmails, setUserEmails] = useState("");
 
   // Get user emails
   let getAllUserEmails = async () => {
@@ -93,7 +94,7 @@ function CreateEvent({
     return data.payload.map((user) => {
       if (user.sub) {
         console.log("user sub emails: ", user.email);
-        setUserEmail(user.email);
+        setUserEmails(user.email);
       }
     });
   };
@@ -112,7 +113,7 @@ function CreateEvent({
     await fetch(`${url}/mail`, {
       method: "POST",
       body: JSON.stringify({
-        to: ["za.qa@outlook.com", "qarout.zaid@gmail.com"],
+        to: ["za.qa@outlook.com", "qarout.zaid@gmail.com"], //userEmails
         subject: `SoC: ${msg.eventName}`,
         text: `Dear fellow bootcamper, <br/> ${user.username} has created a new School of Code event. ${msg.description} You can view more details <a href="https://societly.netlify.app/event/${data.eventid}">here</a>`,
       }),
@@ -131,6 +132,9 @@ function CreateEvent({
       );
       return;
     }
+
+    setHideSubmit("hide");
+    setHideProcess("");
 
     await fetch(eventsEdit ? `${url}/events/${eventId}` : `${url}/events/`, {
       method: eventsEdit ? "PATCH" : "POST",
@@ -552,6 +556,7 @@ function CreateEvent({
                             className={classes.formControl}
                             name="eventTypes"
                             ref={register}
+                            required
                           >
                             <MenuItem value="education">Education</MenuItem>
                             <MenuItem value="social">Social</MenuItem>
@@ -591,7 +596,15 @@ function CreateEvent({
                   </Grid>
 
                   <Grid item xs={12}>
-                    <input type="submit" className="button maxWidth" />
+                    <input
+                      type="submit"
+                      className={cn(`button maxWidth ${hideSubmit}`)}
+                    />
+                    <div className={cn(style.submit, `${hideProcess}`)}>
+                      <div className={style.processing}>
+                        <CircularProgress color="secondary" />
+                      </div>
+                    </div>
                   </Grid>
                 </Grid>
               </React.Fragment>

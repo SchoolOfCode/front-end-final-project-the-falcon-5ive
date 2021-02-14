@@ -173,7 +173,7 @@ export default function EventCard({
     await fetch(`${url}/mail`, {
       method: "POST",
       body: JSON.stringify({
-        to: ["za.qa@outlook.com", "qarout.zaid@gmail.com"],
+        to: ["za.qa@outlook.com", "qarout.zaid@gmail.com"], //userEmails
         subject: `SoC: Event canceled, ${eventname}`,
         text: `The event created by ${user.username} has been deleted. Apologies for any inconveniences this may have caused. You can visit SoCietly here: <a>https://societly.netlify.app</a>`,
       }),
