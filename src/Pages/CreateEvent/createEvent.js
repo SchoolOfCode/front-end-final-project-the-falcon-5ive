@@ -177,7 +177,7 @@ function CreateEvent({
           <div className="signupTitleAligner">
             <h3>Create Event</h3>
             <h3>
-              Please note that users will recieve an email regarding any created
+              Please note that users will receive an email regarding any created
               or deleted event
             </h3>
           </div>
