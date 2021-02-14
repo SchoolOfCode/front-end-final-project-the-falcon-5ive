@@ -227,6 +227,7 @@ function GetAllEvents() {
                                   setAttending={setAttendingList}
                                   addToAttend={addToAttend}
                                   item={item}
+                                  defaultDate={item.date}
                                 />
                               </Paper>
                             </Grid>

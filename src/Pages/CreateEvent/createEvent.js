@@ -44,6 +44,7 @@ function CreateEvent({
   eventname,
   time,
   date,
+  defaultDate,
   editEvent,
 }) {
   const useStyles = makeStyles((theme) => ({
@@ -105,6 +106,9 @@ function CreateEvent({
 
   // Send email function
   async function sendEmail(data, msg) {
+    if (editEvent) {
+      return;
+    }
     if (msg.description === undefined) {
       msg.description = "";
     } else {
@@ -160,6 +164,7 @@ function CreateEvent({
       .catch((error) => {
         setError(true);
       });
+
     setComplete(true);
   };
 
@@ -219,9 +224,8 @@ function CreateEvent({
                         name="date"
                         type="date"
                         ref={register}
-                        required
                         className={cn(style.maxWidth, style.dateInput)}
-                        defaultValue={date}
+                        defaultValue={defaultDate}
                       />
                     </Grid>
 
@@ -232,7 +236,6 @@ function CreateEvent({
                         name="time"
                         type="time"
                         ref={register}
-                        required
                         className={cn(style.maxWidth, style.dateInput)}
                         defaultValue={time}
                       />
@@ -360,7 +363,6 @@ function CreateEvent({
                             </Select>
                           }
                           control={control}
-                          rules={{ required: "Required" }}
                         />
                       </FormControl>
                     </Grid>
@@ -386,7 +388,6 @@ function CreateEvent({
                             </Select>
                           }
                           control={control}
-                          rules={{ required: "Required" }}
                         />
                       </FormControl>
                     </Grid>
@@ -405,13 +406,7 @@ function CreateEvent({
                     <FormControl variant="outlined" fullWidth>
                       <Controller
                         name="eventName"
-                        as={
-                          <TextField
-                            id="eventName"
-                            label="Event Name"
-                            required
-                          />
-                        }
+                        as={<TextField id="eventName" label="Event Name" />}
                         control={control}
                         rules={{ required: "Required" }}
                         defaultValue={eventname}
@@ -426,7 +421,6 @@ function CreateEvent({
                       name="date"
                       type="date"
                       ref={register}
-                      required
                       className={cn(style.maxWidth, style.dateInput)}
                       defaultValue={date}
                     />
@@ -556,7 +550,6 @@ function CreateEvent({
                             className={classes.formControl}
                             name="eventTypes"
                             ref={register}
-                            required
                           >
                             <MenuItem value="education">Education</MenuItem>
                             <MenuItem value="social">Social</MenuItem>
@@ -564,7 +557,6 @@ function CreateEvent({
                           </Select>
                         }
                         control={control}
-                        rules={{ required: "Required" }}
                       />
                     </FormControl>
                   </Grid>
@@ -590,7 +582,6 @@ function CreateEvent({
                           </Select>
                         }
                         control={control}
-                        rules={{ required: "Required" }}
                       />
                     </FormControl>
                   </Grid>

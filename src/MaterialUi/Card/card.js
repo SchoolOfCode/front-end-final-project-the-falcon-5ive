@@ -73,6 +73,7 @@ export default function EventCard({
   myEvents,
   fetchUserEvents,
   userLeftSide,
+  defaultDate,
 }) {
   /*--------Props--------*/
   const {
@@ -96,6 +97,8 @@ export default function EventCard({
     id,
     cohort,
   } = item;
+
+  console.log("this is date card: ", defaultDate);
 
   const eventUser = {
     profileimage: profileimage,
@@ -405,6 +408,7 @@ export default function EventCard({
         <section className={hide}>
           <CreateEvent
             attendinglist={attendinglist}
+            defaultDate={defaultDate}
             date={date}
             description={description}
             enablevolunteers={enablevolunteers}
