@@ -30,6 +30,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import Switch from "@material-ui/core/Switch";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function CreateEvent({
   eventsEdit,
@@ -43,6 +44,7 @@ function CreateEvent({
   eventname,
   time,
   date,
+  defaultDate,
   editEvent,
 }) {
   const useStyles = makeStyles((theme) => ({
@@ -71,6 +73,8 @@ function CreateEvent({
 
   const [hideMap, setHideMap] = useState("");
   const [hideLink, setHideLink] = useState("hide");
+  const [hideSubmit, setHideSubmit] = useState("");
+  const [hideProcess, setHideProcess] = useState("hide");
 
   const [error, setError] = useState(false);
 
@@ -78,8 +82,8 @@ function CreateEvent({
   const [marker, setMarker] = useState(null);
   const [eventLinkForm, setEventLinkForm] = useState("");
 
-  // All user emails
-  const [userEmails, setUserEmail] = useState("");
+  // All subbed user emails
+  const [userEmails, setUserEmails] = useState("");
 
   // Get user emails
   let getAllUserEmails = async () => {
@@ -87,7 +91,9 @@ function CreateEvent({
     let data = await res.json();
 
     return data.payload.map((user) => {
-      setUserEmail(user.email);
+      if (user.sub) {
+        setUserEmails(user.email);
+      }
     });
   };
 
@@ -97,6 +103,9 @@ function CreateEvent({
 
   // Send email function
   async function sendEmail(data, msg) {
+    if (editEvent) {
+      return;
+    }
     if (msg.description === undefined) {
       msg.description = "";
     } else {
@@ -105,9 +114,9 @@ function CreateEvent({
     await fetch(`${url}/mail`, {
       method: "POST",
       body: JSON.stringify({
-        to: ["za.qa@outlook.com", "qarout.zaid@gmail.com"],
+        to: userEmails,
         subject: `SoC: ${msg.eventName}`,
-        text: `${user.username} has created a new School of Code event. ${msg.description} You can view more details here: https://societly.netlify.app/event/${data.eventid}`,
+        text: `Dear fellow bootcamper, <br/> ${user.username} has created a new School of Code event. ${msg.description} You can view more details <a href="https://societly.netlify.app/event/${data.eventid}">here</a>`,
       }),
       headers: { "Content-Type": "application/json" },
     })
@@ -124,6 +133,9 @@ function CreateEvent({
       );
       return;
     }
+
+    setHideSubmit("hide");
+    setHideProcess("");
 
     await fetch(eventsEdit ? `${url}/events/${eventId}` : `${url}/events/`, {
       method: eventsEdit ? "PATCH" : "POST",
@@ -149,6 +161,7 @@ function CreateEvent({
       .catch((error) => {
         setError(true);
       });
+
     setComplete(true);
   };
 
@@ -163,6 +176,10 @@ function CreateEvent({
         <div className="signupTitle">
           <div className="signupTitleAligner">
             <h3>Create Event</h3>
+            <h3>
+              Please note that users will receive an email regarding any created
+              or deleted event
+            </h3>
           </div>
         </div>
         <div className="formContent">
@@ -208,9 +225,8 @@ function CreateEvent({
                         name="date"
                         type="date"
                         ref={register}
-                        required
                         className={cn(style.maxWidth, style.dateInput)}
-                        defaultValue={date}
+                        defaultValue={defaultDate}
                       />
                     </Grid>
 
@@ -221,7 +237,6 @@ function CreateEvent({
                         name="time"
                         type="time"
                         ref={register}
-                        required
                         className={cn(style.maxWidth, style.dateInput)}
                         defaultValue={time}
                       />
@@ -349,7 +364,6 @@ function CreateEvent({
                             </Select>
                           }
                           control={control}
-                          rules={{ required: "Required" }}
                         />
                       </FormControl>
                     </Grid>
@@ -375,7 +389,6 @@ function CreateEvent({
                             </Select>
                           }
                           control={control}
-                          rules={{ required: "Required" }}
                         />
                       </FormControl>
                     </Grid>
@@ -394,13 +407,7 @@ function CreateEvent({
                     <FormControl variant="outlined" fullWidth>
                       <Controller
                         name="eventName"
-                        as={
-                          <TextField
-                            id="eventName"
-                            label="Event Name"
-                            required
-                          />
-                        }
+                        as={<TextField id="eventName" label="Event Name" />}
                         control={control}
                         rules={{ required: "Required" }}
                         defaultValue={eventname}
@@ -415,7 +422,6 @@ function CreateEvent({
                       name="date"
                       type="date"
                       ref={register}
-                      required
                       className={cn(style.maxWidth, style.dateInput)}
                       defaultValue={date}
                     />
@@ -552,7 +558,6 @@ function CreateEvent({
                           </Select>
                         }
                         control={control}
-                        rules={{ required: "Required" }}
                       />
                     </FormControl>
                   </Grid>
@@ -578,13 +583,20 @@ function CreateEvent({
                           </Select>
                         }
                         control={control}
-                        rules={{ required: "Required" }}
                       />
                     </FormControl>
                   </Grid>
 
                   <Grid item xs={12}>
-                    <input type="submit" className="button maxWidth" />
+                    <input
+                      type="submit"
+                      className={cn(`button maxWidth ${hideSubmit}`)}
+                    />
+                    <div className={cn(style.submit, `${hideProcess}`)}>
+                      <div className={style.processing}>
+                        <CircularProgress color="secondary" />
+                      </div>
+                    </div>
                   </Grid>
                 </Grid>
               </React.Fragment>

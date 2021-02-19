@@ -27,7 +27,7 @@ function GetAllEvents() {
   // Importing user data
   const [user] = useUserContext();
 
-  const [allEvents, setAllEvents] = useEventsContext();
+  const [allEvents, setAllEvents] = useEventsContext([]);
   const [attendingList, setAttendingList] = useState([]);
   const [filterValue, setFilterValue] = useState("");
 
@@ -77,7 +77,7 @@ function GetAllEvents() {
       get();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allEvents]);
+  }, []);
 
   useEffect(() => {
     setInterval(() => {
@@ -146,7 +146,8 @@ function GetAllEvents() {
                   </Link>
                 </div>
 
-                {/* <div>
+
+                  {/* <div>
                   <p for="filter">Filter by event type:</p>
                   <select
                     name="filter"
@@ -186,15 +187,67 @@ function GetAllEvents() {
                           .toUpperCase()}${event.slice(1)}`;
                         return <MenuItem value={event}>{eventTitle}</MenuItem>;
                       })}
-                  </Select>
-                </div>
+                    </Select>
+                  </div>
 
-                <section className={`contentContainer ${hideEducation}`}>
-                  <h3>Education</h3>
-                  <div>
+                  <section className={`contentContainer ${hideEducation}`}>
+                    <h3>Education</h3>
+                    <div>
+                      <Grid container spacing={3}>
+                        {allEvents.map((item) => {
+                          if (item.eventtype === "education") {
+                            let date = new Date(item.date).toDateString();
+                            return (
+                              <Grid item xs={4}>
+                                <Paper>
+                                  <Card
+                                    key={uuidv4()}
+                                    date={date}
+                                    setAttending={setAttendingList}
+                                    addToAttend={addToAttend}
+                                    item={item}
+                                  />
+                                </Paper>
+                              </Grid>
+                            );
+                          }
+                        })}
+                      </Grid>
+                    </div>
+                  </section>
+
+                  <section className={`contentContainer ${hideSocial}`}>
+                    <h3>Social</h3>
+
+
                     <Grid container spacing={3}>
                       {allEvents.map((item) => {
-                        if (item.eventtype === "education") {
+                        if (item.eventtype === "social") {
+                          let date = new Date(item.date).toDateString();
+                          return (
+                            <Grid item xs={4}>
+                              <Paper>
+                                <Card
+                                  key={uuidv4()}
+                                  date={date}
+                                  setAttending={setAttendingList}
+                                  addToAttend={addToAttend}
+                                  item={item}
+                                  defaultDate={item.date}
+                                />
+                              </Paper>
+                            </Grid>
+                          );
+                        }
+                      })}
+                    </Grid>
+                  </section>
+
+                  <section className={`contentContainer ${hideCommunity}`}>
+                    <h3>Community</h3>
+                    <Grid container spacing={3}>
+                      {allEvents.map((item, index) => {
+                        if (item.eventtype === "community") {
                           let date = new Date(item.date).toDateString();
                           return (
                             <Grid item xs={4}>
@@ -212,62 +265,13 @@ function GetAllEvents() {
                         }
                       })}
                     </Grid>
-                  </div>
+                  </section>
                 </section>
-
-                <section className={`contentContainer ${hideSocial}`}>
-                  <h3>Social</h3>
-
-                  <Grid container spacing={3}>
-                    {allEvents.map((item) => {
-                      if (item.eventtype === "social") {
-                        let date = new Date(item.date).toDateString();
-                        return (
-                          <Grid item xs={4}>
-                            <Paper>
-                              <Card
-                                key={uuidv4()}
-                                date={date}
-                                setAttending={setAttendingList}
-                                addToAttend={addToAttend}
-                                item={item}
-                              />
-                            </Paper>
-                          </Grid>
-                        );
-                      }
-                    })}
-                  </Grid>
-                </section>
-
-                <section className={`contentContainer ${hideCommunity}`}>
-                  <h3>Community</h3>
-                  <Grid container spacing={3}>
-                    {allEvents.map((item, index) => {
-                      if (item.eventtype === "community") {
-                        let date = new Date(item.date).toDateString();
-                        return (
-                          <Grid item xs={4}>
-                            <Paper>
-                              <Card
-                                key={uuidv4()}
-                                date={date}
-                                setAttending={setAttendingList}
-                                addToAttend={addToAttend}
-                                item={item}
-                              />
-                            </Paper>
-                          </Grid>
-                        );
-                      }
-                    })}
-                  </Grid>
-                </section>
-              </section>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        ))
+      }
     </div>
   );
 }

@@ -97,6 +97,7 @@ export default function MyEvents({ profile = false }) {
                         userId={user?.uid}
                         fetchUserEvents={fetchUserEvents}
                         setUserEvents={setUserEvents}
+                        defaultDate={item.date}
                       />
                     </div>
                   );

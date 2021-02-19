@@ -74,6 +74,7 @@ export default function EventCard({
   myEvents,
   fetchUserEvents,
   userLeftSide,
+  defaultDate,
 }) {
   /*--------Props--------*/
   const {
@@ -97,6 +98,8 @@ export default function EventCard({
     id,
     cohort,
   } = item;
+
+  console.log("this is date card: ", defaultDate);
 
   const eventUser = {
     profileimage: profileimage,
@@ -132,6 +135,9 @@ export default function EventCard({
   const [redLike, setRedLike] = useState("");
   const [likeGet, setLikeGet] = useState([]);
   const [propLike, setPropLike] = useState([]);
+
+  // All subbed user emails
+  const [userEmails, setUserEmails] = useState("");
 
   function getAttenting() {
     setAttedingGet(attendinglist);
@@ -172,14 +178,30 @@ export default function EventCard({
     setExpanded(!expanded);
   };
 
+  // Get user emails
+  let getAllUserEmails = async () => {
+    let res = await fetch(`${url}/users`);
+    let data = await res.json();
+
+    return data.payload.map((user) => {
+      if (user.sub) {
+        setUserEmails(user.email);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getAllUserEmails();
+  }, []);
+
   // Send email function
   async function deleteEmail() {
     await fetch(`${url}/mail`, {
       method: "POST",
       body: JSON.stringify({
-        to: ["za.qa@outlook.com", "qarout.zaid@gmail.com"],
+        to: userEmails,
         subject: `SoC: Event canceled, ${eventname}`,
-        text: `The event created by ${user.username} has been deleted. Apologies of any inconvinienced this may have caused. You can view visit SoCietly here: https://societly.netlify.app`,
+        text: `The event created by ${user.username} has been deleted. Apologies for any inconveniences this may have caused. You can visit SoCietly here: <a>https://societly.netlify.app</a>`,
       }),
       headers: { "Content-Type": "application/json" },
     })
@@ -420,6 +442,7 @@ export default function EventCard({
         <section className={hide}>
           <CreateEvent
             attendinglist={attendinglist}
+            defaultDate={defaultDate}
             date={date}
             description={description}
             enablevolunteers={enablevolunteers}
