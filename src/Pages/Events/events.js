@@ -36,14 +36,16 @@ function GetAllEvents() {
   console.log(`this is all events ${allEvents}`);
 
   function getEventType(event) {
-    let eventTypeArr = event.map((event) => event.eventtype);
+    if (event) {
+      let eventTypeArr = event.map((event) => event.eventtype);
 
-    return eventTypeArr.reduce((acc, curr) => {
-      if (acc.find((value) => value === curr)) {
-        return acc;
-      }
-      return [...acc, curr];
-    }, []);
+      return eventTypeArr.reduce((acc, curr) => {
+        if (acc.find((value) => value === curr)) {
+          return acc;
+        }
+        return [...acc, curr];
+      }, []);
+    }
   }
 
   /*---------------Add to Attend Patch----------------*/
@@ -70,7 +72,10 @@ function GetAllEvents() {
   }
 
   useEffect(() => {
-    allEvents && get();
+    // allEvents && get();
+    if (allEvents === null) {
+      get();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -112,36 +117,35 @@ function GetAllEvents() {
 
   return (
     <div>
-      {
-        (user,
-        allEvents && (
-          <div className={style.row}>
-            <UserLeftSide />
-            <div className="container marginTop">
-              <div className="column1">
-                <section className="columnTwo">
-                  <div className="welcome">
-                    <h3
-                      style={{
-                        fontSize: "1.9rem",
-                        marginTop: "0",
-                        marginBottom: "0",
-                      }}
-                    >
-                      Hello {user?.username} 👋
-                    </h3>
-                    <h4 style={{ marginTop: "0" }}>
-                      Here are the current planned events
-                    </h4>
-                  </div>
-                  <div className={style.buttons}>
-                    <Link to="/createevent">
-                      <button className="button">Create Event</button>
-                    </Link>
-                    <Link to="/myevents">
-                      <button className="button">My Events</button>
-                    </Link>
-                  </div>
+      {user && allEvents && (
+        <div className={style.row}>
+          <UserLeftSide />
+          <div className="container marginTop">
+            <div className="column1">
+              <section className="columnTwo">
+                <div className="welcome">
+                  <h3
+                    style={{
+                      fontSize: "1.9rem",
+                      marginTop: "0",
+                      marginBottom: "0",
+                    }}
+                  >
+                    Hello {user?.username} 👋
+                  </h3>
+                  <h4 style={{ marginTop: "0" }}>
+                    Here are the current planned events
+                  </h4>
+                </div>
+                <div className={style.buttons}>
+                  <Link to="/createevent">
+                    <button className="button">Create Event</button>
+                  </Link>
+                  <Link to="/myevents">
+                    <button className="button">My Events</button>
+                  </Link>
+                </div>
+
 
                   {/* <div>
                   <p for="filter">Filter by event type:</p>
@@ -159,24 +163,25 @@ function GetAllEvents() {
                     })}
                   </select>
                 </div> */}
-                  <div className="marginBottom">
-                    <InputLabel
-                      shrink
-                      id="demo-simple-select-placeholder-label-label"
-                    >
-                      Filter by Event Type
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-placeholder-label-label"
-                      id="demo-simple-select-placeholder-label"
-                      value={filterValue ? filterValue : "all"}
-                      onChange={(e) => {
-                        filter(e.target.value);
-                        setFilterValue(e.target.value);
-                      }}
-                    >
-                      <MenuItem value={"all"}>All</MenuItem>
-                      {getEventType(allEvents).map((event) => {
+                <div className="marginBottom">
+                  <InputLabel
+                    shrink
+                    id="demo-simple-select-placeholder-label-label"
+                  >
+                    Filter by Event Type
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-placeholder-label-label"
+                    id="demo-simple-select-placeholder-label"
+                    value={filterValue ? filterValue : "all"}
+                    onChange={(e) => {
+                      filter(e.target.value);
+                      setFilterValue(e.target.value);
+                    }}
+                  >
+                    <MenuItem value={"all"}>All</MenuItem>
+                    {allEvents &&
+                      getEventType(allEvents).map((event) => {
                         const eventTitle = `${event
                           .charAt(0)
                           .toUpperCase()}${event.slice(1)}`;
@@ -213,6 +218,7 @@ function GetAllEvents() {
 
                   <section className={`contentContainer ${hideSocial}`}>
                     <h3>Social</h3>
+
 
                     <Grid container spacing={3}>
                       {allEvents.map((item) => {
